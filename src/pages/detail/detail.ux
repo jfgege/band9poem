@@ -1,0 +1,255 @@
+<template>
+  <div class="page"  @swipe="toHomePage">
+    <!-- 点击跳转详情页 -->
+    <list class="list" bounces="true">
+      <list-item class="item1 justify-between" type="costom"></list-item>
+      <list-item class="item justify-between" type="costom" for="{{list}}" @click="navigateToPage($item.name)">
+        <div class="center">
+          <text class="name">{{ $item.name }}</text>
+        </div>
+      </list-item>
+      <list-item class="item1 justify-between" type="costom"></list-item>
+    </list>
+    <image class="cover" src="/common/icon/cover.png"></image>
+    <text class="time">{{ time }}</text>
+
+    <text class="title">{{ which }}</text>
+    <!--<image class="back" src="/common/icon/back.png" onclick="back"></image>-->
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+import app from "@system.app"
+const dataMap = {
+  "  1.必修-上": [
+    {name: "沁园春·长沙"},
+    {name: "短歌行"},
+    {name: "归园田居-其一"},
+    {name: "梦游天姥吟留别"},
+    {name: "登高"},
+    {name: "琵琶行并序"},
+    {name: "念奴娇·赤壁怀古"},
+    {name: "永遇乐·京口北固亭怀古"},
+    {name: "声声慢·寻寻觅觅"},
+    {name: "劝学"},
+    {name: "师说"},
+    {name: "赤壁赋"},
+    {name: "登泰山记"},
+    {name: "静女"},
+    {name: "涉江采芙蓉"},
+    {name: "虞美人·春花秋月何时了"},
+    {name: "鹊桥仙·纤云弄巧"}
+  ],
+  "  2.必修-下": [
+    {name: "子路、曾皙、冉有、公西华侍坐"},
+    {name: "齐桓晋文之事(1/2)"},
+    {name: "齐桓晋文之事(2/2)"},
+    {name: "庖丁解牛"},
+    {name: "烛之武退秦师"},
+    {name: "鸿门宴"},
+    {name: "谏逐客书"},
+    {name: "与妻书"},
+    {name: "谏太宗十思疏"},
+    {name: "答司马谏议书"},
+    {name: "阿房宫赋"},
+    {name: "六国论"},
+    {name: "登岳阳楼"},
+    {name: "桂枝香·金陵怀古"},
+    {name: "念奴娇·过洞庭"},
+    {name: "游园"}
+  ],
+  "  3.选修-上": [
+    {name: "《论语》十二章"},
+    {name: "大学之道"},
+    {name: "人皆有不忍人之心"},
+    {name: "《老子》四章"},
+    {name: "五石之瓠"},
+    {name: "兼爱"},
+    {name: "无衣"},
+    {name: "春江花月夜"},
+    {name: "将进酒"},
+    {name: "江城子·乙卯正月二十日夜记梦"}
+  ],
+  "  4.选修-中": [
+    {name: "屈原列传"},
+    {name: "苏武传(1/2)"},
+    {name: "苏武传(2/2)"},
+    {name: "过秦论"},
+    {name: "五代史伶官传序"},
+    {name: "燕歌行并序"},
+    {name: "李凭箜篌引"},
+    {name: "锦瑟"},
+    {name: "书愤"}
+  ],
+  "  5.选修-下": [
+    {name: "离骚（节选）"},
+    {name: "孔雀东南飞并序"},
+    {name: "蜀道难"},
+    {name: "蜀相"},
+    {name: "望海潮（东南形胜）"},
+    {name: "扬州慢（淮左名都）"},
+    {name: "陈情表"},
+    {name: "项脊轩志"},
+    {name: "兰亭集序"},
+    {name: "归去来兮辞并序"},
+    {name: "种树郭橐驼传"},
+    {name: "石钟山记"},
+    {name: "拟行路难（其四）"},
+    {name: "客至"},
+    {name: "登快阁"},
+    {name: "临安春雨初霁"}
+  ]
+}
+export default {
+  // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+  private: {
+    title: "示例页面",
+    time: "00:00",
+    list: []
+  },
+  onInit() {
+    // 直接通过映射获取列表
+    console.log(this.which)
+    this.list = dataMap[this.which] || []
+    const updateTime = () => {
+      const date = new Date()
+      const hour = date.getHours().toString().padStart(2, "0")
+      const minute = date.getMinutes().toString().padStart(2, "0")
+      this.time = hour + ":" + minute
+    }
+    updateTime()
+    this.timer = setInterval(updateTime, 60000)
+  },
+  onDestroy() {
+    clearInterval(this.timer)
+  },
+  navigateToPage(name) {
+    router.push({
+      uri: "/pages/poem",
+      params: {
+        text: name
+      }
+    })
+  },
+  toHomePage(eve) {
+    if (eve.direction === "right") {
+      router.replace({
+        uri: "/pages/index"
+      })
+    }
+  },
+  back() {
+    router.replace({
+      uri: "/pages/index"
+    })
+  }
+}
+</script>
+
+<style>
+.about {
+  position: absolute;
+	left: 210px;
+	top: 36px;
+	width: 80px;
+	height: 80px;
+}
+
+.cover {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 336px;
+  height: 102px;
+  opacity: 1;
+}
+
+.page {
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+.name {
+  font-size: 35px;
+  color: white;
+  text-overflow: ellipsis;
+  lines: 1
+}
+.time {
+  left: 77px;
+	top: 7px;
+	width: 182px;
+	height: 48px;
+	opacity: 1;
+	background: rgba(255, 255, 255, 0.6);
+	/** 文本1 */
+	font-size: 34px;
+	font-weight: 600;
+	letter-spacing: 0px;
+	line-height: 33.6px;
+	color: rgba(255, 255, 255, 0.6);
+	text-align: center;
+	vertical-align: top;
+	position: absolute;
+}
+.title {
+  left: 58px;
+	top: 62px;
+	width: 192px;
+	height: 42px;
+	opacity: 1;
+	background: rgba(255, 255, 255, 1);
+	font-size: 30px;
+	font-weight: 500;
+	letter-spacing: 0px;
+	line-height: 44.8px;
+	color: rgba(255, 255, 255, 1);
+	text-align: center;
+	vertical-align: top;
+	position: absolute;
+}
+
+.list {
+  width: 100%;
+  flex: 1;
+}
+
+.center{
+  align-items: center;
+}
+
+.item {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: 5px;
+	height: 90px;
+	margin-top: 25px;
+	width: 326px;
+	margin-bottom: 15px;
+	border-radius: 35px;
+	background-color: rgba(38, 38, 38, 1);
+}
+
+.item1 {
+  height: 40px;
+	margin-top: 45px;
+	margin-bottom: 15px;
+	border-radius: 50px;
+}
+
+.back {
+  position: absolute;
+	left: 45px;
+	top: 36px;
+	width: 80px;
+	height: 80px;
+}
+</style>
