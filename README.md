@@ -1,1 +1,1 @@
-请前往 https://github.com/Dreamqiucn/poem 进一步了解
+该项目为 https://github.com/Dreamqiucn/poem 的二次修改项目
